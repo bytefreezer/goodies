@@ -14,7 +14,7 @@ Go client library for interacting with the ByteFreezer Control Service API.
 ## Installation
 
 ```bash
-go get github.com/n0needt0/go-goodies/control-client
+go get github.com/bytefreezer/goodies/control-client
 ```
 
 ## Quick Start
@@ -24,7 +24,7 @@ go get github.com/n0needt0/go-goodies/control-client
 ```go
 import (
     "context"
-    controlclient "github.com/n0needt0/go-goodies/control-client"
+    controlclient "github.com/bytefreezer/goodies/control-client"
 )
 
 // Create client
@@ -58,7 +58,7 @@ tenant, err := client.CreateTenant(ctx, account.ID, controlclient.CreateTenantRe
 ```go
 import (
     "context"
-    controlclient "github.com/n0needt0/go-goodies/control-client"
+    controlclient "github.com/bytefreezer/goodies/control-client"
 )
 
 // Local configuration (fallback if API unavailable)
@@ -233,7 +233,7 @@ The client is safe for concurrent use. The ConfigHelper uses internal caching an
 ## Testing
 
 ```bash
-cd /home/andrew/workspace/go-goodies/control-client
+cd /path/to/bytefreezer/goodies/control-client
 go test -v
 ```
 
