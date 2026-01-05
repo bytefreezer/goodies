@@ -203,3 +203,28 @@ type PackerParquetMetadataSummary struct {
 	LastFileModified    time.Time `json:"last_file_modified"`
 	MetadataLastUpdated time.Time `json:"metadata_last_updated"`
 }
+
+// ====================================================================================
+// FIELD TRACKING TYPES (for schema evolution)
+// ====================================================================================
+
+// FieldTracking represents a tracked schema field for a dataset
+type FieldTracking struct {
+	ID          string    `json:"id"`
+	TenantID    string    `json:"tenant_id"`
+	DatasetID   string    `json:"dataset_id"`
+	FieldName   string    `json:"field_name"`
+	FieldType   string    `json:"field_type"`
+	FirstSeenAt time.Time `json:"first_seen_at"`
+	LastSeenAt  time.Time `json:"last_seen_at"`
+	SampleCount int64     `json:"sample_count"`
+	CreatedAt   time.Time `json:"created_at"`
+	UpdatedAt   time.Time `json:"updated_at"`
+}
+
+// FieldTrackingBatchRequest represents a batch of fields to track
+type FieldTrackingBatchRequest struct {
+	TenantID  string            `json:"tenant_id"`
+	DatasetID string            `json:"dataset_id"`
+	Fields    map[string]string `json:"fields"` // field_name -> field_type
+}

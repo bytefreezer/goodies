@@ -309,3 +309,63 @@ func (c *Client) GetParquetMetadataSummary(ctx context.Context, tenantID, datase
 
 	return &summary, nil
 }
+
+// ====================================================================================
+// FIELD TRACKING OPERATIONS (for schema evolution)
+// ====================================================================================
+
+// UpsertFieldTrackingBatch updates or creates multiple field tracking entries
+// fields is a map of field_name -> field_type
+func (c *Client) UpsertFieldTrackingBatch(ctx context.Context, tenantID, datasetID string, fields map[string]string) error {
+	if len(fields) == 0 {
+		return nil
+	}
+
+	payload := FieldTrackingBatchRequest{
+		TenantID:  tenantID,
+		DatasetID: datasetID,
+		Fields:    fields,
+	}
+
+	resp, err := c.doRequest(ctx, "POST", "/api/v1/packer/field-tracking/batch", payload)
+	if err != nil {
+		return err
+	}
+
+	return c.parseResponse(resp, nil)
+}
+
+// GetDatasetFields retrieves all tracked fields for a dataset
+func (c *Client) GetDatasetFields(ctx context.Context, tenantID, datasetID string) ([]FieldTracking, error) {
+	path := fmt.Sprintf("/api/v1/packer/field-tracking/%s/%s", tenantID, datasetID)
+	resp, err := c.doRequest(ctx, "GET", path, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var response struct {
+		Items []FieldTracking `json:"items"`
+		Total int             `json:"total"`
+	}
+	if err := c.parseResponse(resp, &response); err != nil {
+		return nil, err
+	}
+
+	return response.Items, nil
+}
+
+// CleanupStaleFields removes fields that haven't been seen within the TTL period
+func (c *Client) CleanupStaleFields(ctx context.Context, datasetID string, ttlDays int) (int, error) {
+	path := fmt.Sprintf("/api/v1/packer/field-tracking/%s/cleanup?ttl_days=%d", datasetID, ttlDays)
+	resp, err := c.doRequest(ctx, "DELETE", path, nil)
+	if err != nil {
+		return 0, err
+	}
+
+	var result CountResponse
+	if err := c.parseResponse(resp, &result); err != nil {
+		return 0, err
+	}
+
+	return result.Count, nil
+}
