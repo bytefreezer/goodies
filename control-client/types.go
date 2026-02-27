@@ -40,6 +40,7 @@ type Dataset struct {
 	Name        string                 `json:"name"`
 	Description string                 `json:"description"`
 	Active      bool                   `json:"active"`
+	Testing     bool                   `json:"testing"`
 	Status      string                 `json:"status"`
 	CreatedAt   time.Time              `json:"created_at"`
 	UpdatedAt   time.Time              `json:"updated_at"`
