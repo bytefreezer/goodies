@@ -39,9 +39,10 @@ type Dataset struct {
 	TenantID    string                 `json:"tenant_id"`
 	Name        string                 `json:"name"`
 	Description string                 `json:"description"`
-	Active      bool                   `json:"active"`
-	Testing     bool                   `json:"testing"`
-	Status      string                 `json:"status"`
+	Active       bool                   `json:"active"`
+	Testing      bool                   `json:"testing"`
+	LocalStorage bool                   `json:"local_storage"`
+	Status       string                 `json:"status"`
 	CreatedAt   time.Time              `json:"created_at"`
 	UpdatedAt   time.Time              `json:"updated_at"`
 	Config      map[string]interface{} `json:"config"`
